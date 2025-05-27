@@ -24,6 +24,15 @@ def read_csv():
                 })
     return info
 
+# var 2
+# csv.DictReader(f) в Python создаёт объект,
+# который читает данные из CSV-файла и преобразует их в формат словаря.
+# with open(settings.BUS_STATION_CSV, newline='', encoding="utf-8") as f:
+#     csv_data = csv.DictReader(f)
+#     bus_stations_list = []
+#     for row in csv_data:
+#         bus_stations_list.append(row)
+
 def bus_stations(request):
     # получите текущую страницу и передайте ее в контекст
     # также передайте в контекст список станций на странице
@@ -31,7 +40,7 @@ def bus_stations(request):
     info = read_csv()
 
     pagi = Paginator(info, 10)
-    current_page = request.GET.get('page', 1)
+    current_page = int(request.GET.get('page', 1))
     page = pagi.get_page(current_page)
 
     context = {
