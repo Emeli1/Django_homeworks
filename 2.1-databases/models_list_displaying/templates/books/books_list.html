@@ -8,16 +8,37 @@
             <h1><a href="/books">Каталог</a></h1>
         </div>
         <div class="row">
-            <div class="book col-md-4">
-                <h2>Сияние</h2>
-                <p>Автор: Стивен Кинг</p>
-                <p>Дата публикации: 2018-09-10</p>
-            </div>
-            <div class="book col-md-4">
-                <h2>1984</h2>
-                <p>Автор: Джордж Оруэл</p>
-                <p>Дата публикации: 2015-03-11</p>
-            </div>
+            {% for book in books %}
+                <div class="book col-md-4">
+                    <h2><a href="/books">{{ book.name }}</a></h2>
+                    <p>Автор: {{ book.author }} </p>
+                    <p>Дата публикации: {{ book.pub_date|date:"Y-m-d" }} </p>
+                </div>
+            {% empty %}
+                <p>Нет доступных книг.</p> <!-- Сообщение, если нет книг -->
+            {% endfor %}
         </div>
+    </div>
+
+    <div class="paginator text-left">
+        {% if previous_book %}
+            <a href="{% url 'books_by_date' previous_book %}"class="arrow-left">
+            </a></p>
+        {% endif %}
+
+        <span>
+        {% if next_book %}
+            <a href="{% url 'books_by_date' next_book %}">{{ next_book }}</a>
+        {% else %}
+            <span>Нет предыдущей даты</span>
+        {% endif %}
+        </span>
+
+        {% if next_book %}
+            <span>
+                <a href="{% url 'books_by_date' next_book %}">{{ next_book }}</a>
+            </span>
+            <a href="{% url 'books_by_date' next_book %}"class="arrow-right"></a>
+            {% endif %}
     </div>
 {% endblock %}
