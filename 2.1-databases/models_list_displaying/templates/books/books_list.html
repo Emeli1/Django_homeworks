@@ -20,10 +20,9 @@
         </div>
     </div>
 
-    <div class="paginator text-left">
+    <div class="paginator text-center">
         {% if previous_book %}
-            <a href="{% url 'books_by_date' previous_book %}"class="arrow-left">
-            </a></p>
+            <a href="{% url 'books_by_date' previous_book %}"class="arrow-left"><</a>
         {% endif %}
 
         <span>
@@ -38,7 +37,7 @@
             <span>
                 <a href="{% url 'books_by_date' next_book %}">{{ next_book }}</a>
             </span>
-            <a href="{% url 'books_by_date' next_book %}"class="arrow-right"></a>
+            <a href="{% url 'books_by_date' next_book %}"class="arrow-right">></a>
             {% endif %}
     </div>
 {% endblock %}
