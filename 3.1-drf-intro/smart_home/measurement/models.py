@@ -2,12 +2,18 @@ from django.db import models
 
 
 class Sensor(models.Model):
-    name = models.CharField(max_length=50, verbose_name='Датчик')
-    description = models.CharField(max_length=50, verbose_name='Описание')
+    name = models.CharField(max_length=60)
+    description = models.CharField()
+
+    def __str__(self):
+        return self.name
 
 
 class Measurement(models.Model):
-    sensor = models.ForeignKey(Sensor, on_delete=models.CASCADE, related_name='measurements')
-    temperature = models.DecimalField(max_digits=4, decimal_places=1, verbose_name='Темпиратура')
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
-    changed_at = models.DateTimeField(auto_now=True, verbose_name='Дата изменения')
+    temperature = models.DecimalField(max_digits=3, decimal_places=1)
+    update_datetime = models.DateTimeField(auto_now=True)
+    image = models.ImageField(upload_to='measurements/', null=True, blank=True)
+    sensor_id = models.ForeignKey(Sensor, on_delete=models.CASCADE, related_name='measurements')
+
+    def __str__(self):
+        return f'Температура {self.temperature}°C в {self.sensor.name}'

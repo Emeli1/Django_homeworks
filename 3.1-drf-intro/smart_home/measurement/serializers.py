@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Measurement, Sensor
+from .models import Sensor, Measurement
 
 class SensorSerializer(serializers.ModelSerializer):
     class Meta:
@@ -11,7 +11,7 @@ class SensorSerializer(serializers.ModelSerializer):
 class MeasurementSerializer(serializers.ModelSerializer):
     class Meta:
         model = Measurement
-        fields = ['temperature', 'created_at', 'changed_at']
+        fields = ['temperature', 'update_datetime', 'sensor_id', 'image']
 
 
 class SensorDetailSerializer(serializers.ModelSerializer):
@@ -21,10 +21,6 @@ class SensorDetailSerializer(serializers.ModelSerializer):
         fields = ['id,', 'name', 'description', 'measurements']
 
 
-class MeasurementDetailsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Measurement
-        fields = ['sensor', 'temperature']
 
 
 
