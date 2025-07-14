@@ -22,6 +22,8 @@ class AdvertisementViewSet(ModelViewSet):
     filterset_class = AdvertisementFilter
 
     def get_queryset(self):
+        """Получение объявлений для всех пользователей со статусом "открыто" и "закрыто"
+        и для пользователя-создателя + объявления со статусом "черновик"."""
         user = self.request.user
         ads = Advertisement.objects.filter(status = 'OPEN'and'CLOSED')
 
