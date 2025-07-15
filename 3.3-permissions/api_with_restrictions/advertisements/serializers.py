@@ -42,27 +42,21 @@ class AdvertisementSerializer(serializers.ModelSerializer):
 
         # TODO: добавьте требуемую валидацию
 
-        """Смена статуса."""
-        advertisement_instance = self.instance
-        creator = self.context['request'].user
-        if advertisement_instance:
-            new_status = data.get('status', advertisement_instance.status)
-            if advertisement_instance.creator != creator:
-                if 'status' in data:
-                    raise serializers.ValidationError('Вы не можете поменять статус этого объявления')
-                else:
-                    pass
-            else:
-                data.setdefault('status', 'DRAFT')
+        creator = self.context['request'].user   # Получаем текущего пользователя
 
+        # Проверка, может ли пользователь менять статус чужого объявления
+        if self.instance and data.get('status') != self.instance.status:
+            # Проверяем, является ли текущий пользователь создателем объявления
+            if self.instance.creator != creator:
+                raise serializers.ValidationError(
+                    'Вы не можете поменять статус этого объявления, так как не являетесь его создателем.')
 
-        if not self.instance:
+        if self.instance is None:
             if data.get("status") == "OPEN":
-                if Advertisement.objects.filter(creator=creator).count() == 10:
+                if Advertisement.objects.filter(creator=creator, status="OPEN").count() == 10:
                     raise serializers.ValidationError(f'Доступно не более 10 открытых объявлений')
 
         return data
-
 
 
 class FavouriteSerializer(serializers.ModelSerializer):
