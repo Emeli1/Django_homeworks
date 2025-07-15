@@ -57,8 +57,10 @@ class AdvertisementSerializer(serializers.ModelSerializer):
 
 
         if not self.instance:
-            if Advertisement.objects.filter(creator=creator).count() == 10:
-                raise serializers.ValidationError(f'Доступно не более 10 открытых объявлений')
+            if data.get("status") == "OPEN":
+                if Advertisement.objects.filter(creator=creator).count() == 10:
+                    raise serializers.ValidationError(f'Доступно не более 10 открытых объявлений')
+
         return data
 
 
