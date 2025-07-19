@@ -126,7 +126,7 @@ def test_max_students(client, course_factory, student_factory):
         with pytest.raises(ValidationError):
             course.full_clean()  # Вызов полной проверки на уровне модели
     else:
-        # Если лимит студентов не 20, то добавление должно быть успешным
+        # Если студентов не 20, то добавление должно быть успешным
         course.students.add(new_student)
         course.full_clean()  # Пройти валидацию без ошибок
-        assert course.students.count() == 20
+        assert course.students.count() == max_students + 1
